@@ -1,0 +1,1 @@
+est-sfs config-rate6.txt Dis_MLP05_DYD_estsfs_nomissing.txt seedfile.txt Dis_MLP05_DYD_estsfs_out_sfs.txt Dis_MLP05_DYD_estsfs_out_pvalues.txt
