@@ -73,7 +73,8 @@ def read_hap_df(vcf_fn, chrom=None, start=None, end=None, samples=None, **kwa):
     else:
         tabix_stream = subprocess.Popen(['tabix', vcf_fn, region], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         stdin = tabix_stream.stdout
-    gen_df = pd.read_csv(stdin, sep='\t',comment='#',names=vcf_header, usecols=['CHROM','POS']+samples, index_col=['CHROM','POS'], **kwa)
+    gen_df = pd.read_csv(stdin, sep='\t',comment='#',names=vcf_header, usecols=['CHROM','POS']+samples, index_col=['CHROM','POS'],dtype=str, **kwa)
+    # print(gen_df)
     first_haplotype = gen_df.applymap(lambda s: s.split(":")[0].split('/')[0])
     second_haplotype = gen_df.applymap(lambda s: s.split(":")[0].split('/')[1])
     first_haplotype.columns = pd.MultiIndex.from_product([first_haplotype.columns, [0]])
@@ -85,23 +86,18 @@ def read_hap_df(vcf_fn, chrom=None, start=None, end=None, samples=None, **kwa):
 
 popx = [x.strip() for x in open(sys.argv[1], "r")]
 popy = [x.strip() for x in open(sys.argv[2], "r")]
-site_list=[x.strip() for x in open('Did_sift_provean.pos',"r")]
-vcf_fn = "Did_sift_provean.recode.vcf.gz"
+site_list=[x.strip() for x in open('../reanalyze1019/Dis_sift_provean.pos',"r")]
+vcf_fn = "Dis_all.snpeff_ex_wrong_pol_GT.recode.vcf.gz"
 
 popx_hap_df = read_hap_df(vcf_fn,samples=popx)
 popy_hap_df = read_hap_df(vcf_fn,samples=popy)
 
 
-Rxy=[]
-window_size=len(site_list)//20
-for i in range(0,len(site_list)-window_size,window_size):
+def rxy_calc(site_list,popx_hap_df,popy_hap_df):
     Lx_not_y=0
     Ly_not_x=0
-    for index in range(0,window_size):
-        try:
-            x = site_list[i+index].split('\t')
-        except IndexError:
-            continue
+    for line in site_list:
+        x = line.split('\t')
         chr_name = x[0]
         pos = int(x[1])
         gt_x_list = popx_hap_df.loc[(chr_name,pos),:].values.tolist()
@@ -113,18 +109,26 @@ for i in range(0,len(site_list)-window_size,window_size):
         # print(dx,nx,dy,ny)
         Lx_not_y += (dx/nx)*(1-dy/ny)
         Ly_not_x += (dy/ny)*(1-dx/nx)
-        # Lx_not_y += (2*dx*(nx-dx)/(nx*(nx-1)))*(1-(2*dy*(ny-dy))/(ny*(ny-1)))
-        # Ly_not_x += (2*dy*(ny-dy)/(ny*(ny-1)))*(1-(2*dx*(nx-dx))/(nx*(nx-1)))
-    try:
-        Rxy.append(Lx_not_y/Ly_not_x)
-        # print(Lx_not_y/Ly_not_x)
-    except ZeroDivisionError:
-        continue
 
+    return(Lx_not_y/Ly_not_x)
+
+
+window_size=len(site_list)//20
+site_lists = []
+s=0
+for index in range(0,20):
+    new_site_list = site_list.copy()
+    for i in range(window_size*index,window_size*(index + 1)):
+        try:
+            new_site_list.pop(i)
+        except IndexError:
+            continue
+    s+=1
+    # print(s)
+    # print(len(new_site_list))
+    site_lists.append(new_site_list)
+print(f'total rxy is : {rxy_calc(site_list,popx_hap_df,popy_hap_df)}')
 #jackknifing
-print(len(Rxy))
-for i in range(0,20):
-    data=np.array(Rxy)
-    Rxy_n_1 = [n for n in Rxy if Rxy.index(n) != i]
-    print(statistics.mean(Rxy_n_1))
+for s_list in site_lists:
+    print(rxy_calc(s_list,popx_hap_df,popy_hap_df))
 
