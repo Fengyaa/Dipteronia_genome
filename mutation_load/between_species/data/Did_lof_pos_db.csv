@@ -1,0 +1,9 @@
+Dis_chrom,Dis_chr_pos,Dis_gene_name,Dis_ref,Dis_ref_count,Dis_alt,Dis_alt_count,Did_chrom,Did_chr_pos,Did_gene_name,Did_ref,Did_ref_count,Did_alt,Did_alt_count,gene_direction,ref_genome,Did_gene_direction,Dis_gene_direction
+HIC_ASM_1,1785745,Dis.HIC_ASM_1.222,A,108,-,0,HIC_ASM_0,76209828,Did.HIC_ASM_0.4090,A,49,T,1,,Did,-,-
+HIC_ASM_0,51622874,Dis.HIC_ASM_0.3039,A,108,-,0,HIC_ASM_1,82111507,Did.HIC_ASM_1.2536,T,49,A,1,,Did,-,+
+HIC_ASM_2,8631496,Dis.HIC_ASM_2.798,A,108,-,0,HIC_ASM_2,105556884,Did.HIC_ASM_2.4010,T,47,C,3,,Did,+,-
+HIC_ASM_3,44591189,Dis.HIC_ASM_3.2660,G,108,-,0,HIC_ASM_3,73128337,Did.HIC_ASM_3.3338,C,49,A,1,,Did,-,+
+HIC_ASM_8,13052725,Dis.HIC_ASM_8.1207,G,108,-,0,HIC_ASM_5,16066252,Did.HIC_ASM_5.1331,A,21,G,29,,Did,-,-
+HIC_ASM_4,14952212,Dis.HIC_ASM_4.1465,A,108,-,0,HIC_ASM_5,64600922,Did.HIC_ASM_5.3922,T,8,C,42,,Did,+,-
+HIC_ASM_5,52782118,Dis.HIC_ASM_5.2620,T,108,-,0,HIC_ASM_6,23354766,Did.HIC_ASM_6.1595,A,46,G,4,,Did,+,-
+HIC_ASM_5,43938554,Dis.HIC_ASM_5.2231,T,108,-,0,HIC_ASM_6,32770369,Did.HIC_ASM_6.1957,T,46,A,4,,Did,+,+
