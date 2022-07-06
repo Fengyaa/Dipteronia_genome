@@ -77,3 +77,7 @@ with open(f'{OG_name}.anc.cds','w') as out_cds:
     out_cds.write(anc_seq + "\n")
 with open(f'{OG_name}.anc.pep','w') as out_pep:
     out_pep.write(anc_pep + "\n")
+
+   
+## for i in `cat genelist`; do perl $pal2nal $i.fasta $i.cds -output fasta > $i.codon.fasta;done
+## for i in `cat genelist`; do iqtree -s $i.codon.fasta -asr;done
